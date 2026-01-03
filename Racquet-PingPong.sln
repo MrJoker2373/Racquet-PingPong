@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RacquetPingPong", "RacquetPingPong.csproj", "{35FBCA6A-42F3-D48E-1150-7D1C0E6EAED9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common.csproj", "{3D6B2585-B47A-5394-2ADB-A909384EBAAE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{35FBCA6A-42F3-D48E-1150-7D1C0E6EAED9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35FBCA6A-42F3-D48E-1150-7D1C0E6EAED9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35FBCA6A-42F3-D48E-1150-7D1C0E6EAED9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35FBCA6A-42F3-D48E-1150-7D1C0E6EAED9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D6B2585-B47A-5394-2ADB-A909384EBAAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D6B2585-B47A-5394-2ADB-A909384EBAAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D6B2585-B47A-5394-2ADB-A909384EBAAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D6B2585-B47A-5394-2ADB-A909384EBAAE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
