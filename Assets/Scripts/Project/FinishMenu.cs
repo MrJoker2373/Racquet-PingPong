@@ -30,7 +30,10 @@ namespace RacquetPingPong
             _ball = FindFirstObjectByType<Ball>();
 
             _restartButton.onClick.AddListener(Restart);
-            _reviveButton.onClick.AddListener(Revive);
+            _reviveButton.onClick.AddListener(StartRevive);
+
+            if (DebugManager.Instance.IsDebug == false)
+                YandexHandler.Instance.Revived += CompleteRevive;
         }
 
         public async void Show()
@@ -54,12 +57,11 @@ namespace RacquetPingPong
 
         private void Restart()
         {
-            if (DebugManager.Instance.IsDebug == false)
-                YandexHandler.SetLeaderboard(_counter.Count);
+            UserHandler.Instance.SetScore(_counter.Count);
             SceneLoader.Instance.Load(SceneID.Game);
         }
 
-        private async void Revive()
+        private async void StartRevive()
         {
             await SceneLoader.Instance.Transition.SetSmoothAsync(1f);
             if (DebugManager.Instance.IsDebug == false)

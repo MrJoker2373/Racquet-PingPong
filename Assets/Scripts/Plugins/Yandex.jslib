@@ -1,4 +1,35 @@
 mergeInto(LibraryManager.library, {
+
+  FullscreenAd: function () {
+    ysdk.adv.showFullscreenAdv({callbacks:{}});
+  },
+
+  ReviveAd: function () {
+    ysdk.adv.showRewardedVideo({
+      callbacks: {
+        onRewarded: () => {
+          gameInstance.SendMessage('Management', 'ReviveCompleted');
+        }
+      }
+    })
+  },
+
+  SetUserData: function (data) {
+    var text = UTF8ToString(data);
+    var myData = JSON.parse(text);
+    player.setData(myData);
+  },
+
+  GetUserData: function () {
+    player.getData().then(_data => {
+        return JSON.stringify(_data);
+    });
+  },
+
+  SetLeaderboardScore: function (value) {
+    ysdk.leaderboards.setScore('Score', value);
+  },
+
   GetLanguage: function () {
     var lang = ysdk.environment.i18n.lang;
     var bufferSize = lengthBytesUTF8(lang) + 1;
@@ -6,25 +37,13 @@ mergeInto(LibraryManager.library, {
     stringToUTF8(lang, buffer, bufferSize);
     return buffer;
   },
-  SetLeaderboard: function (value)
-  {
-    ysdk.getLeaderboards()
-    .then(lb => {
-      lb.setLeaderboardScore('Score', value);
-    });
+
+  GetUserName: function () {
+    return player.getName();
   },
-  ReviveAd: function ()
-  {
-    ysdk.adv.showRewardedVideo({
-      callbacks: {
-        onRewarded: () => {
-          myGameInstance.SendMessage('Management', 'Revive');
-        }
-      }
-    })
-  },
-  FullscreenAd: function ()
-  {
-    ysdk.adv.showFullscreenAdv({callbacks:{}});
+
+  GetUserAvatar: function () {
+    return player.getPhoto("medium");
   }
+
 });
