@@ -20,7 +20,7 @@ namespace RacquetPingPong
         [field: SerializeField]
         public static UserHandler Instance { get; private set; }
 
-        private async void Awake()
+        private void Awake()
         {
             if (Instance == null)
             {
@@ -29,10 +29,15 @@ namespace RacquetPingPong
                     SetScore(0);
                 else
                 {
-                    _nameLabel.text = YandexHandler.GetUserName();
-                    _avatar.texture = await LoadAvatar(YandexHandler.GetUserAvatar());
-                    _data = LoadData();
-                    SetScore(_data.Score);
+                    YandexHandler.Instance.UserLoaded += async (d) =>
+                    {
+                        LocalizationManager.Instance.Initialize(YandexHandler.GetLanguage());
+                        _nameLabel.text = YandexHandler.GetUserName();
+                        _avatar.texture = await LoadAvatar(YandexHandler.GetUserAvatar());
+                        _data = d;
+                        _scoreLabel.text = _data.Score.ToString();
+                    };
+                    YandexHandler.GetUserData();
                 }
             }
         }
@@ -46,7 +51,7 @@ namespace RacquetPingPong
                 if (DebugManager.Instance.IsDebug == false)
                 {
                     YandexHandler.SetLeaderboardScore(_data.Score);
-                    SaveData(_data);
+                    YandexHandler.Instance.Save(_data);
                 }
             }
         }
@@ -59,18 +64,6 @@ namespace RacquetPingPong
                 request.result == UnityWebRequest.Result.ProtocolError)
                 return null;
             return ((DownloadHandlerTexture)request.downloadHandler).texture;
-        }
-
-        private UserData LoadData()
-        {
-            var text = YandexHandler.GetUserData();
-            return JsonUtility.FromJson<UserData>(text);
-        }
-
-        private void SaveData(UserData data)
-        {
-            var text = JsonUtility.ToJson(data);
-            YandexHandler.SetUserData(text);
         }
     }
 }

@@ -1,4 +1,4 @@
-namespace RacquetPingPong
+namespace Common
 {
     public enum LocalizationID
     {

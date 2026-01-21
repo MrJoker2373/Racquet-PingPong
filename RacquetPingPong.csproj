@@ -62,16 +62,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Project\StartMenu.cs" />
-    <Compile Include="Assets\Scripts\Project\LocalizationManager.cs" />
     <Compile Include="Assets\Scripts\Project\UserHandler.cs" />
     <Compile Include="Assets\Scripts\Project\ColorRandomizer.cs" />
     <Compile Include="Assets\Scripts\Project\Ball.cs" />
     <Compile Include="Assets\Scripts\Project\FinishMenu.cs" />
     <Compile Include="Assets\Scripts\Project\TimeFailHandler.cs" />
-    <Compile Include="Assets\Scripts\Project\LocalizationID.cs" />
     <Compile Include="Assets\Scripts\Project\YandexHandler.cs" />
     <Compile Include="Assets\Scripts\Project\BallCounter.cs" />
-    <Compile Include="Assets\Scripts\Project\LocalizationHandler.cs" />
     <Compile Include="Assets\Scripts\Project\TriggerFailHandler.cs" />
     <Compile Include="Assets\Scripts\Project\UserData.cs" />
     <Compile Include="Assets\Scripts\Project\Racquet.cs" />

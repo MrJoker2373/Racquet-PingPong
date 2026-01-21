@@ -1,4 +1,4 @@
-namespace RacquetPingPong
+namespace Common
 {
     using UnityEngine;
     using TMPro;
@@ -11,10 +11,12 @@ namespace RacquetPingPong
         [SerializeField]
         private string _en;
 
-        public void Initialize(LocalizationID id)
+        private void Start() => Initialize();
+
+        public void Initialize()
         {
             var label = GetComponent<TextMeshProUGUI>();
-            switch (id)
+            switch (LocalizationManager.Instance.ID)
             {
                 case LocalizationID.En:
                     label.text = _en;

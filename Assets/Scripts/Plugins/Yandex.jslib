@@ -6,23 +6,24 @@ mergeInto(LibraryManager.library, {
 
   ReviveAd: function () {
     ysdk.adv.showRewardedVideo({
-      callbacks: {
+    callbacks: {
         onRewarded: () => {
-          gameInstance.SendMessage('Management', 'ReviveCompleted');
+          gameInstance.SendMessage('Management', 'OnReviveCompleted');
+        },
+        onClose: () => {
+          gameInstance.SendMessage('Management', 'OnReviveFinished');
         }
       }
     })
   },
 
   SetUserData: function (data) {
-    var text = UTF8ToString(data);
-    var myData = JSON.parse(text);
-    player.setData(myData);
+    player.setData(JSON.parse(window.toJSString(data)));
   },
 
   GetUserData: function () {
     player.getData().then(_data => {
-        return JSON.stringify(_data);
+        gameInstance.SendMessage('Management', 'OnUserLoaded', JSON.stringify(_data));
     });
   },
 
@@ -31,19 +32,15 @@ mergeInto(LibraryManager.library, {
   },
 
   GetLanguage: function () {
-    var lang = ysdk.environment.i18n.lang;
-    var bufferSize = lengthBytesUTF8(lang) + 1;
-    var buffer = _malloc(bufferSize);
-    stringToUTF8(lang, buffer, bufferSize);
-    return buffer;
+    return window.toCSString(ysdk.environment.i18n.lang);
   },
 
   GetUserName: function () {
-    return player.getName();
+    return window.toCSString(player.getName());
   },
 
   GetUserAvatar: function () {
-    return player.getPhoto("medium");
+    return window.toCSString(player.getPhoto("medium"));
   }
 
 });

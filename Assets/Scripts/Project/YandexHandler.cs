@@ -6,7 +6,9 @@ namespace RacquetPingPong
 
     public class YandexHandler : MonoBehaviour
     {
-        public event Action Revived;
+        public event Action ReviveFinished;
+        public event Action ReviveCompleted;
+        public event Action<UserData> UserLoaded;
 
         public static YandexHandler Instance { get; private set; }
 
@@ -17,7 +19,7 @@ namespace RacquetPingPong
         [DllImport("__Internal")]
         public static extern void SetUserData(string data);
         [DllImport("__Internal")]
-        public static extern string GetUserData();
+        public static extern void GetUserData();
         [DllImport("__Internal")]
         public static extern string SetLeaderboardScore(int score);
         [DllImport("__Internal")]
@@ -33,6 +35,12 @@ namespace RacquetPingPong
                 Instance = this;
         }
 
-        public void ReviveCompleted() => Revived?.Invoke();
+        public void Save(UserData data) => SetUserData(JsonUtility.ToJson(data));
+
+        public void OnReviveFinished() => ReviveFinished?.Invoke();
+
+        public void OnReviveCompleted() => ReviveCompleted?.Invoke();
+
+        public void OnUserLoaded(string data) => UserLoaded?.Invoke(JsonUtility.FromJson<UserData>(data));
     }
 }

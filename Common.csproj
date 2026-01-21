@@ -68,13 +68,16 @@
     <Compile Include="Assets\Scripts\Plugins\Common\Animations\AnimationHandler.cs" />
     <Compile Include="Assets\Scripts\Plugins\Common\SceneLoader.cs" />
     <Compile Include="Assets\Scripts\Plugins\Common\SceneAnimationTransition.cs" />
+    <Compile Include="Assets\Scripts\Plugins\Common\LocalizationHandler.cs" />
     <Compile Include="Assets\Scripts\Plugins\Common\Animations\FadeAnimation.cs" />
     <Compile Include="Assets\Scripts\Plugins\Common\ISceneListener.cs" />
     <Compile Include="Assets\Scripts\Plugins\Common\InputID.cs" />
     <Compile Include="Assets\Scripts\Plugins\Common\ISceneTransition.cs" />
     <Compile Include="Assets\Scripts\Plugins\Common\EntryPoint.cs" />
+    <Compile Include="Assets\Scripts\Plugins\Common\LocalizationID.cs" />
     <Compile Include="Assets\Scripts\Plugins\Common\DebugManager.cs" />
     <Compile Include="Assets\Scripts\Plugins\Common\Animations\EasingHandler.cs" />
+    <Compile Include="Assets\Scripts\Plugins\Common\LocalizationManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Scripts\Plugins\Common\Common.asmdef" />

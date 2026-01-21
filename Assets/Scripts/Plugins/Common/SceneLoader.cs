@@ -14,7 +14,6 @@ namespace Common
 
         public static SceneLoader Instance { get; private set; }
         public ISceneTransition Transition => IsLoading ? null : _transition;
-        public SceneID CurrentScene { get; private set; }
         public bool IsLoading { get; private set; }
 
         private void Awake()
@@ -22,9 +21,9 @@ namespace Common
             if (Instance == null)
             {
                 Instance = this;
-                _transition = GetComponentInChildren<ISceneTransition>();
+                _transition = GetComponentInChildren<ISceneTransition>(includeInactive: true);
                 _transition.Initialize();
-                _listeners = GetComponentsInChildren<ISceneListener>();
+                _listeners = GetComponentsInChildren<ISceneListener>(includeInactive: true);
                 foreach (var l in _listeners)
                     l.Initialize();
             }
@@ -36,7 +35,6 @@ namespace Common
         {
             if (IsLoading == false)
             {
-                CurrentScene = id;
                 IsLoading = true;
                 await _transition.SetSmoothAsync(1f);
 

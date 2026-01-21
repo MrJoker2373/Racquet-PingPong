@@ -1,8 +1,8 @@
 namespace RacquetPingPong
 {
-    using Common;
     using UnityEngine;
     using UnityEngine.UI;
+    using Common;
 
     [RequireComponent(typeof(CanvasGroup))]
     [RequireComponent(typeof(AnimationHandler))]
@@ -12,12 +12,15 @@ namespace RacquetPingPong
         private Button _restartButton;
         [SerializeField]
         private Button _reviveButton;
+        [SerializeField]
+        private float _delay;
 
         private AnimationHandler _animation;
         private CanvasGroup _group;
         private BallCounter _counter;
         private Racquet _racquet;
         private Ball _ball;
+        private bool _isRevived;
 
         private void Start()
         {
@@ -33,7 +36,10 @@ namespace RacquetPingPong
             _reviveButton.onClick.AddListener(StartRevive);
 
             if (DebugManager.Instance.IsDebug == false)
-                YandexHandler.Instance.Revived += CompleteRevive;
+            {
+                YandexHandler.Instance.ReviveFinished += FinishRevive;
+                YandexHandler.Instance.ReviveCompleted += CompleteRevive;
+            }
         }
 
         public async void Show()
@@ -67,15 +73,33 @@ namespace RacquetPingPong
             if (DebugManager.Instance.IsDebug == false)
                 YandexHandler.ReviveAd();
             else
+            {
                 CompleteRevive();
+                FinishRevive();
+            }
         }
 
-        private async void CompleteRevive()
+        private async void FinishRevive()
         {
-            _racquet.Enable();
-            _ball.ResetPosition();
-            await Hide();
-            await SceneLoader.Instance.Transition.SetSmoothAsync(0f);
+            float time = 0f;
+            while (time < _delay)
+            {
+                time += Time.unscaledDeltaTime;
+                await Awaitable.NextFrameAsync();
+            }
+
+            if (_isRevived == false)
+                Restart();
+            else
+            {
+                _isRevived = false;
+                _racquet.Enable();
+                _ball.ResetPosition();
+                await Hide();
+                await SceneLoader.Instance.Transition.SetSmoothAsync(0f);
+            }
         }
+
+        private void CompleteRevive() => _isRevived = true;
     }
 }
