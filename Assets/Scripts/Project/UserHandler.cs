@@ -25,21 +25,26 @@ namespace RacquetPingPong
             if (Instance == null)
             {
                 Instance = this;
-                if (DebugManager.Instance.IsDebug == true)
-                    SetScore(0);
-                else
+                _scoreLabel.text = _data.Score.ToString();
+                _nameLabel.gameObject.SetActive(false);
+                _avatar.gameObject.SetActive(false);
+
+                if (DebugManager.Instance.IsDebug == false)
                 {
-                    YandexHandler.Instance.UserLoaded += async (d) =>
+                    LocalizationManager.Instance.Initialize(YandexHandler.GetLanguage());
+                    if (YandexHandler.IsAuthorized() == true)
                     {
-                        LocalizationManager.Instance.Initialize(YandexHandler.GetLanguage());
-                        _nameLabel.text = YandexHandler.GetUserName();
-                        _avatar.texture = await LoadAvatar(YandexHandler.GetUserAvatar());
-                        _data = d;
-                        _scoreLabel.text = _data.Score.ToString();
-                    };
-                    YandexHandler.GetUserData();
+                        YandexHandler.DataLoaded += LoadData;
+                        YandexHandler.LoadData();
+                    }
                 }
             }
+        }
+
+        private void OnDestroy()
+        {
+            if (DebugManager.Instance.IsDebug == false && YandexHandler.IsAuthorized() == true)
+                YandexHandler.DataLoaded -= LoadData;
         }
 
         public void SetScore(int score)
@@ -48,11 +53,8 @@ namespace RacquetPingPong
             {
                 _data.Score = score;
                 _scoreLabel.text = _data.Score.ToString();
-                if (DebugManager.Instance.IsDebug == false)
-                {
-                    YandexHandler.SetLeaderboardScore(_data.Score);
-                    YandexHandler.Instance.Save(_data);
-                }
+                if (DebugManager.Instance.IsDebug == false && YandexHandler.IsAuthorized())
+                    SaveData();
             }
         }
 
@@ -64,6 +66,22 @@ namespace RacquetPingPong
                 request.result == UnityWebRequest.Result.ProtocolError)
                 return null;
             return ((DownloadHandlerTexture)request.downloadHandler).texture;
+        }
+
+        private void SaveData()
+        {
+            YandexHandler.SaveData(JsonUtility.ToJson(_data));
+            YandexHandler.SetLeaderboard(_data.Score);
+        }
+
+        private async void LoadData(string data)
+        {
+            _nameLabel.gameObject.SetActive(true);
+            _avatar.gameObject.SetActive(true);
+            _nameLabel.text = YandexHandler.GetName();
+            _avatar.texture = await LoadAvatar(YandexHandler.GetAvatar());
+            _data = JsonUtility.FromJson<UserData>(data);
+            _scoreLabel.text = _data.Score.ToString();
         }
     }
 }

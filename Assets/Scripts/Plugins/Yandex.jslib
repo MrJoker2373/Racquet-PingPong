@@ -1,46 +1,50 @@
 mergeInto(LibraryManager.library, {
 
   FullscreenAd: function () {
-    ysdk.adv.showFullscreenAdv({callbacks:{}});
+    ysdk.adv.showFullscreenAdv();
   },
 
   ReviveAd: function () {
     ysdk.adv.showRewardedVideo({
-    callbacks: {
-        onRewarded: () => {
-          gameInstance.SendMessage('Management', 'OnReviveCompleted');
-        },
+      callbacks: {
         onClose: () => {
           gameInstance.SendMessage('Management', 'OnReviveFinished');
+        },
+        onRewarded: () => {
+          gameInstance.SendMessage('Management', 'OnReviveCompleted');
         }
       }
     })
   },
 
-  SetUserData: function (data) {
-    player.setData(JSON.parse(window.toJSString(data)));
-  },
-
-  GetUserData: function () {
-    player.getData().then(_data => {
-        gameInstance.SendMessage('Management', 'OnUserLoaded', JSON.stringify(_data));
-    });
-  },
-
-  SetLeaderboardScore: function (value) {
-    ysdk.leaderboards.setScore('Score', value);
+  IsAuthorized: function () {
+    return player && player.isAuthorized();
   },
 
   GetLanguage: function () {
     return window.toCSString(ysdk.environment.i18n.lang);
   },
 
-  GetUserName: function () {
+  GetName: function () {
     return window.toCSString(player.getName());
   },
 
-  GetUserAvatar: function () {
+  GetAvatar: function () {
     return window.toCSString(player.getPhoto("medium"));
+  },
+
+  SetLeaderboard: function (value) {
+    ysdk.leaderboards.setScore('Score', value);
+  },
+
+  SaveData: function (data) {
+    player.setData(JSON.parse(window.toJSString(data)));
+  },
+
+  LoadData: function () {
+    player.getData().then(_data => {
+      gameInstance.SendMessage('Management', 'OnDataLoaded', JSON.stringify(_data));
+    });
   }
 
 });

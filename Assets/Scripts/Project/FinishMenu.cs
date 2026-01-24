@@ -37,8 +37,17 @@ namespace RacquetPingPong
 
             if (DebugManager.Instance.IsDebug == false)
             {
-                YandexHandler.Instance.ReviveFinished += FinishRevive;
-                YandexHandler.Instance.ReviveCompleted += CompleteRevive;
+                YandexHandler.ReviveCompleted += CompleteRevive;
+                YandexHandler.ReviveFinished += FinishRevive;
+            }
+        }
+
+        private void OnDestroy()
+        {
+            if (DebugManager.Instance.IsDebug == false)
+            {
+                YandexHandler.ReviveCompleted -= CompleteRevive;
+                YandexHandler.ReviveFinished -= FinishRevive;
             }
         }
 

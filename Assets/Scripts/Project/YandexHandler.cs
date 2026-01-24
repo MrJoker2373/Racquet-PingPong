@@ -6,41 +6,33 @@ namespace RacquetPingPong
 
     public class YandexHandler : MonoBehaviour
     {
-        public event Action ReviveFinished;
-        public event Action ReviveCompleted;
-        public event Action<UserData> UserLoaded;
-
-        public static YandexHandler Instance { get; private set; }
+        public static event Action ReviveFinished;
+        public static event Action ReviveCompleted;
+        public static event Action<string> DataLoaded;
 
         [DllImport("__Internal")]
         public static extern void FullscreenAd();
         [DllImport("__Internal")]
         public static extern void ReviveAd();
         [DllImport("__Internal")]
-        public static extern void SetUserData(string data);
-        [DllImport("__Internal")]
-        public static extern void GetUserData();
-        [DllImport("__Internal")]
-        public static extern string SetLeaderboardScore(int score);
+        public static extern bool IsAuthorized();
         [DllImport("__Internal")]
         public static extern string GetLanguage();
         [DllImport("__Internal")]
-        public static extern string GetUserName();
+        public static extern string GetName();
         [DllImport("__Internal")]
-        public static extern string GetUserAvatar();
-
-        private void Awake()
-        {
-            if (Instance == null)
-                Instance = this;
-        }
-
-        public void Save(UserData data) => SetUserData(JsonUtility.ToJson(data));
+        public static extern string GetAvatar();
+        [DllImport("__Internal")]
+        public static extern string SetLeaderboard(int score);
+        [DllImport("__Internal")]
+        public static extern void SaveData(string data);
+        [DllImport("__Internal")]
+        public static extern void LoadData();
 
         public void OnReviveFinished() => ReviveFinished?.Invoke();
 
         public void OnReviveCompleted() => ReviveCompleted?.Invoke();
 
-        public void OnUserLoaded(string data) => UserLoaded?.Invoke(JsonUtility.FromJson<UserData>(data));
+        public void OnDataLoaded(string data) => DataLoaded?.Invoke(data);
     }
 }
