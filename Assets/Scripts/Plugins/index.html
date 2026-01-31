@@ -96,8 +96,6 @@
           window.ysdk = _ysdk;
           _ysdk.getPlayer().then(_player => {
             player = _player;
-            if (_player.isAuthorized() === false)
-              _ysdk.auth.openAuthDialog(); 
           });
         });
 

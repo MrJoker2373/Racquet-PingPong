@@ -15,6 +15,7 @@ namespace RacquetPingPong
         private Ball _ball;
         private FinishMenu _menu;
         private CancellationTokenSource _tokenSource;
+        private bool _triggered;
 
         private void Start()
         {
@@ -27,6 +28,8 @@ namespace RacquetPingPong
 
         private void Update()
         {
+            if (_triggered == true)
+                return;
             if (_ball.Magnitude < _minMagnitude && _ball.IsSleeping == false)
                 StartTime();
             else
@@ -53,8 +56,11 @@ namespace RacquetPingPong
                     await Awaitable.WaitForSecondsAsync(1f, _tokenSource.Token);
                     await _animation.SetSmoothAsync(0f);
                     _menu.Show();
+                    _tokenSource.Dispose();
                     _tokenSource = null;
-                } catch { }
+                    _triggered = true;
+                }
+                catch { }
             }
         }
 
